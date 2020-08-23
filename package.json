@@ -1,7 +1,7 @@
 {
   "name": "string-toolkit",
   "version": "1.0.57",
-  "description": "A package containing tools to manipulate an string.",
+  "description": "A package containing tools to manipulate a string.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
