@@ -110,7 +110,13 @@ class Functions {
      * We use the spread operator {...} to turn the string into a perfect single element array and map it's elements to see if it matches a alphabetical character, if so lower case the element and get the emoji, if not we pick it from the special object.
      * @type {String}
      */
-    return [...string.toString()].map(e => e.match(/\w/) ? `:regional_indicator_${e.toLowerCase()}:` : specialObj[e] || e).join("");
+    return [...string.toString()].map(e => {
+      if (e.match(/\W/) || e.match(/\d/)) {
+        return specialObj[e] || e;
+        } else if (e.match(/\w/)) {
+          return `:regional_indicator_${e.toLowerCase()}:`;
+        }
+          }).join("");
   }
   
   // This function is related to discord
@@ -161,6 +167,8 @@ class Functions {
      * After all that loop we finally return the perfect progress bar depending on the parameters given.
      * @type {String}
      */
+     if (progressBar.length > 50) progressBar = progressBar.slice(0, -2) + options.progressChar;
+     
     return progressBar;
   }
   
