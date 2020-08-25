@@ -1,7 +1,7 @@
 {
   "name": "string-toolkit",
-  "version": "1.0.57",
-  "description": "A package containing tools to manipulate an string.",
+  "version": "1.0.87",
+  "description": "A package containing tools to manipulate a string.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -12,5 +12,13 @@
     "manipulation"
   ],
   "author": "Voltrex Master <voltrexmastermodules@gmail.com>",
+  "bugs": {
+    "url": "https://github.com/VoltrexMaster/string-toolkit/issues"
+  },
+  "homepage": "https://github.com/VoltrexMaster/string-toolkit",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VoltrexMaster/string-toolkit.git"
+  },
   "license": "ISC"
 }
