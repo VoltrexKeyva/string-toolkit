@@ -3,17 +3,22 @@ class Functions {
     this.version = require("./package.json").version;
   }
   
+  /**
+   * @param {string} string - String to propercase.
+   * @param {boolean?} lowerCaseBoolean - Whether or not to first cast the string into lowercase then begin the process.
+   */
   toProperCase(string, lowerCaseBoolean) {
     if (!string) {
       throw new TypeError("Expected a string");
     }
     
-    /**Check to see if the second parameter {Boolean} exists or true to convert the string to lower case to return a perfect proper cased string
-     * @type {String}
-     */
     return !lowerCaseBoolean || lowerCaseBoolean === false || lowerCaseBoolean !== true ? string.toString().replace(/(\b\w)/gi, w => w.toUpperCase()) : string.toString().toLowerCase().replace(/(\b\w)/gi, w => w.toUpperCase());
   }
   
+  /**
+   * @param {string} string - String to chunk.
+   * @param {number} ChunkBy - The amount of chars to chunk the string by.
+   */
   toChunks(string, ChunkBy) {
     if (!string) {
       throw new TypeError("Expected a string.");
@@ -29,10 +34,6 @@ class Functions {
       stringToChunk = string;
   }
   
-  /**
-   * Checks how many chars exists in the provided string's length with {ChunkBy} and creates a new array according to that number given from the check, the loop through and define every element of the array by the substringed string and it's left overs.
-   * @type {String}
-   */
       let chunksNum = Math.ceil(stringToChunk.length / parseInt(ChunkBy));
       let chunks = new Array(chunksNum);
       for (let i = 0, o = 0; i < parseInt(chunksNum); ++i, o += parseInt(ChunkBy)) {
@@ -42,12 +43,14 @@ class Functions {
       return chunks;
   }
   
+  /**
+   * @param {string} string - String to scramble.
+   */
   scramble(string) {
     if (!string) {
       throw new TypeError("Expected a string");
     }
     
-    // Before we continue, we implement a new function to shuffle the elements of an array as this will be required
     function shuffle(array) {
       let currentIndex, randomIndex, tempIndex;
       
@@ -62,34 +65,30 @@ class Functions {
       return array;
     }
     
-    /**
-     * Now we use the spread operator {...} in an array with the string included to make the entire string and array so we can shuffle it and return the scrambled string.
-     * @type {String}
-     */
      return shuffle([...string.toString()]).join("");
   }
   
+  /**
+   * @param {string} string - String to mock.
+   */
   mock(string) {
     if (!string) {
       throw new TypeError("Expected  string.");
     }
     
-    // We require the chunks function because it's needed here.
     let chunksFunction = this.toChunks;
     
-    /**
-     * Chunking the string by 2 elements and mapping them to convert it's second char of every element to an upper case char, so it comes out as a mocked string.
-     * @type {String}
-     */
     return chunksFunction(string.toString().toLowerCase(), 2).map(e => e.slice(0, 1) + e.slice(1).toUpperCase()).join("");
   }
   
+  /**
+   * @param {string} string - String to emojify.
+   */
   emojify(string) {
     if (!string) {
       throw new TypeError("Expected a string.");
     }
     
-    // We create an object containing our special characters to identify correct emojis of the numbers and some other characters
     let specialObj = {
       0: ":zero:",
       1: ":one:",
@@ -106,10 +105,6 @@ class Functions {
       "?": ":question:"
     };
     
-    /**
-     * We use the spread operator {...} to turn the string into a perfect single element array and map it's elements to see if it matches a alphabetical character, if so lower case the element and get the emoji, if not we pick it from the special object.
-     * @type {String}
-     */
     return [...string.toString()].map(e => {
       if (e.match(/\W/) || e.match(/\d/)) {
         return specialObj[e] || e;
@@ -119,19 +114,23 @@ class Functions {
           }).join("");
   }
   
-  // This function is related to discord
+  /**
+   * This function is related to discord
+   * @param {string} string - String to check if it has a custom emoji.
+   */
   hasCustomEmoji(string) {
     if (!string) {
       throw new TypeError("Expected a string.");
     }
     
-    /**
-     * Here we check if the string matches a custom emoji regex, if so return it's amount of how many it did match, if not then return No custom emoji detected.
-     * @type {String}
-     */
      return string.toString().match(/<a?:(\w{2,32}):(\d{17,19})>/) ? string.toString().match(/<a?:(\w{2,32}):(\d{17,19})>/gi).length : "No custom emoji detected";
   }
   
+  /**
+   * @param {number} inTotal - Elapsed progression of the progress bar.
+   * @param {number} Total - Total length of the progress bar (Not in char length).
+   * @param {object?} options - The options to apply on the progress bar.
+   */
   createProgressBar(inTotal, Total, options = {}) {
     if (!Number.isInteger(inTotal) || !Number.isInteger(Total)) {
       throw new TypeError("Both the first and the second parameters are required and must be typeof number.");
@@ -140,8 +139,7 @@ class Functions {
     if (parseInt(inTotal) > parseInt(Total)) {
       throw new RangeError("First parameter must be lesser than the second parameter.");
     }
-    
-    // We turn options that was an empty object in the parameter to a useful object but if options were included in the parameter it will be used in this object.
+
     options = {
       elapsedChar: options.elapsedChar || "=",
       progressChar: options.progressChar || ">",
@@ -150,39 +148,88 @@ class Functions {
     
     let progressBar = "", fillLine;
     
-    // Here we loop through the progressBar string and add the {options.elpasedChar} to it while there's {inTotal} left in the {Total}.
     for (fillLine = 0; fillLine < (parseInt(inTotal) / parseInt(Total)) * 50; fillLine++) {
       progressBar += options.elapsedChar.toString();
     }
     
-    // Add the {options.progressChar} to the progress bar after the first loop.
     progressBar += options.progressChar.toString();
     
-    // Here we loop through the progressBar again but this time we add {options.emptyChar} to the progressBar while we subtract the amount of {options.elapsedChar} we added to the string from 50 and finally return {progressBar}.
     for (let emptyLine = 0; emptyLine < 50 - fillLine - 1; emptyLine++) {
       progressBar += options.emptyChar.toString();
     }
     
-    /**
-     * After all that loop we finally return the perfect progress bar depending on the parameters given.
-     * @type {String}
-     */
      if (progressBar.length > 50) progressBar = progressBar.slice(0, -2) + options.progressChar;
      
     return progressBar;
   }
   
+  /**
+   * @param {string} string - String to get an abbreviation of.
+   */
   toAbbreviation(string) {
     if (!string) {
       throw new TypeError("Expected a string.");
     }
     
-    /**
-     * We first trim to get rid of the trailing spaces then split up the string by spaces and map them to get the first char of every element if any spaces exist in the provided string.
-     * @type {String}
-     */
      return string.toString().includes(" ") ? string.toString().trim().split(" ").map(element => element.charAt(0)).join("") : string.toString();
   }
+  
+  /**
+   * This function is related to discord bot's tokens, generating a fake tokens
+   */
+  fakeToken() {
+let allC = "qwertyuiopasdfghjklzxcbnm1234567890";
+let arrayAll = [...allC];
+let ids = [17, 18, 19];
+let idLength = ids[Math.floor(Math.random() * ids.length)];
+let numArr = arrayAll.filter(e => e.match(/\d/));
+let charArr = arrayAll.filter(e => e.match(/\w/));
+
+let tokenString = "";
+for (let i = 0; i < idLength; i++) {
+tokenString += numArr[Math.floor(Math.random() * numArr.length)];
+}
+
+tokenString = Buffer.from(tokenString).toString("base64") + ".";
+
+let mtp = "";
+for (let j = 0; j < 6; j++) {
+mtp += charArr[Math.floor(Math.random() * charArr.length)];
+}
+
+mtp = [...mtp].map(e => {
+let op = [0, 1];
+let ro = op[Math.floor(Math.random() * op.length)];
+
+if (ro === 1) {
+return e.toUpperCase();
+} else {
+return e;
+}
+}).join("");
+
+tokenString += mtp + ".";
+
+let uidr = "";
+for (let v = 0; v < 26; v++) {
+uidr += arrayAll[Math.floor(Math.random() * arrayAll.length)];
+}
+
+uidr = [...uidr].map(e => {
+let opuid = [0, 1];
+let rouid = opuid[Math.floor(Math.random() * opuid.length)];
+
+if (rouid === 1) {
+return e.toUpperCase();
+} else {
+return e;
+}
+}).join("");
+
+tokenString += uidr;
+
+return tokenString;
+}
   // By Voltrex Master
 }
 
