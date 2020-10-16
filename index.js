@@ -4,8 +4,9 @@ class Functions {
   }
   
   /**
-   * @param {string} string - String to propercase.
-   * @param {boolean?} lowerCaseBoolean - Whether or not to first cast the string into lowercase then begin the process.
+   * Proper cases a string.
+   * @param {string} string
+   * @param {?boolean} lowerCaseBoolean
    */
   toProperCase(string, lowerCaseBoolean) {
     if (!string) {
@@ -16,8 +17,9 @@ class Functions {
   }
   
   /**
-   * @param {string} string - String to chunk.
-   * @param {number} ChunkBy - The amount of chars to chunk the string by.
+   * Chunks a string to the specified amount of chars.
+   * @param {string} string
+   * @param {number} ChunkBy
    */
   toChunks(string, ChunkBy) {
     if (!string) {
@@ -44,7 +46,8 @@ class Functions {
   }
   
   /**
-   * @param {string} string - String to scramble.
+   * Scrambles a string.
+   * @param {string} string
    */
   scramble(string) {
     if (!string) {
@@ -69,7 +72,8 @@ class Functions {
   }
   
   /**
-   * @param {string} string - String to mock.
+   * Mocks a string.
+   * @param {string} string
    */
   mock(string) {
     if (!string) {
@@ -82,7 +86,8 @@ class Functions {
   }
   
   /**
-   * @param {string} string - String to emojify.
+   * Emojifies a string.
+   * @param {string} string
    */
   emojify(string) {
     if (!string) {
@@ -115,8 +120,8 @@ class Functions {
   }
   
   /**
-   * This function is related to discord
-   * @param {string} string - String to check if it has a custom emoji.
+   * This function is related to discord, checks if the string contains a custom emoji.
+   * @param {string} string
    */
   hasCustomEmoji(string) {
     if (!string) {
@@ -127,9 +132,10 @@ class Functions {
   }
   
   /**
-   * @param {number} inTotal - Elapsed progression of the progress bar.
-   * @param {number} Total - Total length of the progress bar (Not in char length).
-   * @param {object?} options - The options to apply on the progress bar.
+   * Creates a progress bar.
+   * @param {number} inTotal
+   * @param {number} Total
+   * @param {?Object} options
    */
   createProgressBar(inTotal, Total, options = {}) {
     if (!Number.isInteger(inTotal) || !Number.isInteger(Total)) {
@@ -164,7 +170,8 @@ class Functions {
   }
   
   /**
-   * @param {string} string - String to get an abbreviation of.
+   * Gets the abbreviation of a string.
+   * @param {string} string
    */
   toAbbreviation(string) {
     if (!string) {
@@ -175,7 +182,7 @@ class Functions {
   }
   
   /**
-   * This function is related to discord bot's tokens, generating a fake tokens
+   * This function is related to discord bot's tokens, generating a fake token.
    */
   fakeToken() {
 let allC = "qwertyuiopasdfghjklzxcbnm1234567890";
