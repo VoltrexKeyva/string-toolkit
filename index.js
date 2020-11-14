@@ -159,7 +159,7 @@ class Functions {
         emptyChar: options.emptyChar || "-"
     }, available = (inTotal / Total) * 100;
 
-    let progressBar = options.elapsedChar.toString().repeat(available) + options.progressChar.toString() + options.emptyChar.toString().repeat(100 - (available + (elapsed === total ? 0 : 1)));
+    let progressBar = options.elapsedChar.toString().repeat(available) + options.progressChar.toString() + options.emptyChar.toString().repeat(100 - (available + (inTotal === Total ? 0 : 1)));
     return progressBar.length > 100 ? progressBar.slice(1) : progressBar;
 }
   
