@@ -5,8 +5,9 @@ class Functions {
   
   /**
    * Proper cases a string.
-   * @param {string} string
-   * @param {?boolean} lowerCaseBoolean
+   * @param {string} string - String to proper case
+   * @param {?boolean} lowerCaseBoolean - Whether or not to cast the string into lowercase before proper casing it
+   * @returns {string}
    */
   toProperCase(string, lowerCaseBoolean) {
     if (!string) {
@@ -18,8 +19,9 @@ class Functions {
   
   /**
    * Chunks a string to the specified amount of chars.
-   * @param {string} string
-   * @param {number} ChunkBy
+   * @param {string} string - String to chunk
+   * @param {number} ChunkBy - Amount of chars to chunk by
+   * @returns {string[]}
    */
   toChunks(string, ChunkBy) {
     if (!string) {
@@ -43,7 +45,8 @@ class Functions {
   
   /**
    * Scrambles a string.
-   * @param {string} string
+   * @param {string} string - String to scramble
+   * @returns {string}
    */
   scramble(string) {
     if (!string) {
@@ -69,7 +72,8 @@ class Functions {
   
   /**
    * Mocks a string.
-   * @param {string} string
+   * @param {string} string - String to mock
+   * @returns {string}
    */
   mock(string) {
     if (!string) {
@@ -83,7 +87,8 @@ class Functions {
   
   /**
    * Emojifies a string.
-   * @param {string} string
+   * @param {string} string - String to emojify
+   * @returns {string}
    */
   emojify(string) {
     if (!string) {
@@ -117,7 +122,8 @@ class Functions {
   
   /**
    * This function is related to discord, checks if the string contains a custom emoji.
-   * @param {string} string
+   * @param {string} string - String to check whether or not it has a custom emoji
+   * @returns {(number|"No custom emoji detected")}
    */
   hasCustomEmoji(string) {
     if (!string) {
@@ -129,45 +135,38 @@ class Functions {
   
   /**
    * Creates a progress bar.
-   * @param {number} inTotal
-   * @param {number} Total
-   * @param {?Object} options
+   * @param {number} inTotal - Elapsed
+   * @param {number} Total - Goal
+   * @typedef {Object} progressBarOptions
+   * @property {string} elapsedChar - Character to fill the elapsed portion of the progress bar
+   * @property {string} progressChar - Character for the current progress
+   * @property {string} emptyChar - Character to fill the empty portion of the progress bar or in other words, the unreached portion
+   * @param {?progressBarOptions} options - Options for the progress bar
+   * @returns {string}
    */
   createProgressBar(inTotal, Total, options = {}) {
     if (!Number.isInteger(inTotal) || !Number.isInteger(Total)) {
-      throw new TypeError("Both the first and the second parameters are required and must be typeof number.");
+        throw new TypeError("Both the first and the second parameters are required and must be typeof number.");
     }
-    
+
     if (parseInt(inTotal) > parseInt(Total)) {
-      throw new RangeError("First parameter must be lesser than the second parameter");
+        throw new RangeError("First parameter must be lesser than the second parameter");
     }
 
     options = {
-      elapsedChar: options.elapsedChar || "=",
-      progressChar: options.progressChar || ">",
-      emptyChar: options.emptyChar || "-"
-    };
-    
-    let progressBar = "", fillLine;
-    
-    for (fillLine = 0; fillLine < (parseInt(inTotal) / parseInt(Total)) * 50; fillLine++) {
-      progressBar += options.elapsedChar.toString();
-    }
-    
-    progressBar += options.progressChar.toString();
-    
-    for (let emptyLine = 0; emptyLine < 50 - fillLine - 1; emptyLine++) {
-      progressBar += options.emptyChar.toString();
-    }
-    
-     if (progressBar.length > 50) progressBar = progressBar.slice(0, -2) + options.progressChar;
-     
-    return progressBar;
-  }
+        elapsedChar: options.elapsedChar || "=",
+        progressChar: options.progressChar || ">",
+        emptyChar: options.emptyChar || "-"
+    }, available = (inTotal / Total) * 100;
+
+    let progressBar = options.elapsedChar.toString().repeat(available) + options.progressChar.toString() + options.emptyChar.toString().repeat(100 - (available + (elapsed === total ? 0 : 1)));
+    return progressBar.length > 100 ? progressBar.slice(1) : progressBar;
+}
   
   /**
    * Gets the abbreviation of a string.
-   * @param {string} string
+   * @param {string} string - String to get an abbreviation of
+   * @returns {string}
    */
   toAbbreviation(string) {
     if (!string) {
@@ -179,44 +178,37 @@ class Functions {
   
   /**
    * This function is related to discord bot's tokens, generating a fake token.
+   * @returns {string}
    */
   fakeToken() {
-let allC = "qwertyuiopasdfghjklzxcbnm1234567890";
-let arrayAll = [...allC];
-let ids = [17, 18, 19];
-let idLength = ids[Math.floor(Math.random() * ids.length)];
-let numArr = arrayAll.filter(e => e.match(/\d/));
-let charArr = arrayAll.filter(e => e.match(/\w/));
-
-let tokenString = "";
-for (let i = 0; i < idLength; i++) {
-tokenString += numArr[Math.floor(Math.random() * numArr.length)];
+    let IDs = [17, 18, 19],
+        chars = [..."abcdefghijklmnopqrstuvwxyz1234567890"],
+        options = [0, 1];
+    return (Buffer.from(Array.from({
+        length: IDs[Math.floor(Math.random() * IDs.length)]
+    }, () => {
+        let nums = Array.from({
+            length: 10
+        }, (a, r) => r);
+        return nums[Math.floor(Math.random() * nums.length)];
+    }).join("")).toString("base64") + "." + Array.from({
+        length: 33
+    }, (a, r) => r === 5 ? "." : chars[Math.floor(Math.random() * chars.length)]).reduce((acc, current) => (acc += options[Math.floor(Math.random() * options.length)] === 1 ? current.toUpperCase() : current, acc), "")).slice(0, 59);
 }
 
-tokenString = Buffer.from(tokenString).toString("base64") + ".";
+  /**
+   * Shortens a string by a specified amount
+   * @param {string} string - String to shorten
+   * @param {number} length - Amount of chars to shorten by
+   * @param {?string} placeholder - The string to concatenate to be shortened string
+   * @returns {string}
+   */
+  shorten(string, length, placeholder) {
+      if (typeof string !== "string") throw new TypeError("First parameter must be a type of string");
+      if (!Number.isInteger(length)) throw new TypeError("Second parameter must be a type of number");
+      return string.slice(0, length) + (placeholder ? placeholder.toString() : "...");
+  }
 
-let mtp = "";
-for (let j = 0; j < 6; j++) {
-mtp += charArr[Math.floor(Math.random() * charArr.length)];
-}
-
-let options = [0, 1];
-
-mtp = [...mtp].map(e => options[Math.floor(Math.random() * options.length)] === 1 ? e.toUpperCase() : e).join("");
-
-tokenString += mtp + ".";
-
-let uidr = "";
-for (let v = 0; v < 26; v++) {
-uidr += arrayAll[Math.floor(Math.random() * arrayAll.length)];
-}
-
-uidr = [...uidr].map(e => options[Math.floor(Math.random() * options.length)] === 1 ? e.toUpperCase() : e).join("");
-
-tokenString += uidr;
-
-return tokenString;
-}
   // By Voltrex Master
 }
 
