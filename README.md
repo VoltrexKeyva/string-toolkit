@@ -35,7 +35,7 @@ emojify(String) | `emojify("hey there!")` | 1- String (Required) | `":regional_i
 hasCustomEmoji(String) | `hasCustomEmoji("hey there!")` | 1- String (Required) | `"No custom emoji detected"`
 createProgressBar(Number, Number, Object) | `createProgressBar(57, 100, { elapsedChar: "+", progressChar: "@", emptyChar: "~" })` | 1- Number (Required)<br>2- Number (Required)<br>3- Object (Optional) | `"+++++++++++++++++++++++++++++@~~~~~~~~~~~~~~~~~~~~"`
 toAbbreviation(String) | `toAbbreviation("hey there!")` | 1- String (Required) | `"ht"`
-fakeToken() | `fakeToken()` | No parameters | `NDI0NTYyNzY1NTMzNzQ0MjY3MA==.Cz0j0.Zf6Tfo17wN27N8tnkoG164Q9`
+fakeToken() | `fakeToken()` | No parameters | `"NDI0NTYyNzY1NTMzNzQ0MjY3MA==.Cz0j0.Zf6Tfo17wN27N8tnkoG164Q9"`
 shorten(String, Number, String) | `shorten("bruh moment", 4, "end")` | 1- String (Required)<br>2- Number (Required)<br>3- String (Optional) | `"bruhend"`
 
 ### More functions coming soon.
