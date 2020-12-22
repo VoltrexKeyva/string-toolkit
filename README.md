@@ -33,9 +33,10 @@ scramble(String) | `scramble("hey there!")` | 1- String (Required) | `"rte! ehyh
 mock(String) | `mock("hey there!")` | 1- String (Required) | `"hEy tHeRe!"`
 emojify(String) | `emojify("hey there!")` | 1- String (Required) | `":regional_indicator_h::regional_indicator_e::regional_indicator_y: :regional_indicator_t::regional_indicator_h::regional_indicator_e::regional_indicator_r::regional_indicator_e::exclamation:"`
 hasCustomEmoji(String) | `hasCustomEmoji("hey there!")` | 1- String (Required) | `"No custom emoji detected"`
-createProgressBar(Number, Number, Object) | `createProgressBar(57, 100, { elapsedChar: "+", progressChar: "@", emptyChar: "~" })` | 1- Number (Required)<br>2- Number (Required)<br>3- Object (Optional) | `"+++++++++++++++++++++++++++++@~~~~~~~~~~~~~~~~~~~~"`
+createProgressBar(Number, Number, Object) | `createProgressBar(57, 100, { elapsedChar: "+", progressChar: "@", emptyChar: "~", barLength: 10 })` | 1- Number (Required)<br>2- Number (Required)<br>3- Object (Optional) | `"+++++@~~~"`
 toAbbreviation(String) | `toAbbreviation("hey there!")` | 1- String (Required) | `"ht"`
 fakeToken() | `fakeToken()` | No parameters | `"NDI0NTYyNzY1NTMzNzQ0MjY3MA==.Cz0j0.Zf6Tfo17wN27N8tnkoG164Q9"`
 shorten(String, Number, String) | `shorten("bruh moment", 4, "end")` | 1- String (Required)<br>2- Number (Required)<br>3- String (Optional) | `"bruhend"`
+parseOptions(String[]) | `parseOptions(["bruh", "--moment", "what", "bro", "--search", "--big bruh moment"])` | 1- String[] (Required) | `{ options: { moment: 'what bro', big: 'bruh moment' }, flags: [ 'search' ], contentNoOptions: 'bruh', contentNoFlags: 'bruh what bro bruh moment' }`
 
 ### More functions coming soon.
