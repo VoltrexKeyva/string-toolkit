@@ -141,6 +141,7 @@ class Functions {
    * @property {string} elapsedChar - Character to fill the elapsed portion of the progress bar
    * @property {string} progressChar - Character for the current progress
    * @property {string} emptyChar - Character to fill the empty portion of the progress bar or in other words, the unreached portion
+   * @property {number} barLength - Length of the progress bar in chars
    * @param {?progressBarOptions} options - Options for the progress bar
    * @returns {string}
    */
@@ -156,11 +157,14 @@ class Functions {
     options = {
         elapsedChar: options.elapsedChar || "=",
         progressChar: options.progressChar || ">",
-        emptyChar: options.emptyChar || "-"
-    }, available = (inTotal / Total) * 100;
+        emptyChar: options.emptyChar || "-",
+        barLength: Number.isInteger(options.barLength) ? options.barLength : 50
+    };
+    
+    let available = (inTotal / Total) * options.barLength;
 
-    let progressBar = options.elapsedChar.toString().repeat(available) + options.progressChar.toString() + options.emptyChar.toString().repeat(100 - (available + (inTotal === Total ? 0 : 1)));
-    return progressBar.length > 100 ? progressBar.slice(1) : progressBar;
+    let progressBar = options.elapsedChar.toString().repeat(available) + options.progressChar.toString() + options.emptyChar.toString().repeat(options.barLength - (available + (inTotal === Total ? 0 : 1)));
+    return progressBar.length > options.barLength ? progressBar.slice(0, options.barLength) : progressBar;
 }
   
   /**
@@ -208,6 +212,38 @@ class Functions {
       if (!Number.isInteger(length)) throw new TypeError("Second parameter must be a type of number");
       return string.slice(0, length) + (placeholder ? placeholder.toString() : "...");
   }
+  
+  /**
+   * Parses options and flags from an array of strings.
+   * @param {string[]} args - Array of strings to parse options and flags from.
+   * @typedef {Object} OptionsAndFlagsObject
+   * @property {Object} OptionsAndFlagsObject.options - All the parsed options.
+   * @property {string[]} OptionsAndFlagsObject.flags - All the parsed flags.
+   * @property {string} OptionsAndFlagsObject.contentNoOptions - All the provided strings in the array concatenated without the options.
+   * @property {string} OptionsAndFlagsObject.contentNoFlags - All the provided strings in the array concatenated without the flags.
+   * @returns {OptionsAndFlagsObject}
+   */
+  parseOptions(args) {
+    if (!Array.isArray(args) || !args.every(argument => typeof argument === "string")) throw new TypeError("First parameter must be an array and every element must be a type of string.");
+    
+    let matches = args.filter(a => a.match(/--(.*)/));
+    
+    if (!matches.length) return {
+       options: {},
+       flags: [],
+       contentNoOptions: args.join(" "),
+       contentNoFlags: args.join(" ")
+    };
+    
+    let optionsAndFlags = Object.entries(matches.map(match => args.slice(args.indexOf(match))).map(m => m.slice(1)).reduce((acc, current, i) => (acc[matches[i].slice(2)] = (current.reduce((a, b) => ((a[1] ? a : (b.match(/--(.*)/) ? (a[1] = true, a) : a[0].push(b))), a), [[], false])[0].join(" ")), acc), {})).reduce((acc, current) => (current[1] ? acc.options[current[0]] = current[1] : acc.flags.push(current[0]), acc), {
+        options: {},
+        flags: []
+    });
+    
+    optionsAndFlags["contentNoOptions"] = args.join(" ").indexOf(matches[0]) === 0 ? "" : args.join(" ").slice(0, args.join(" ").indexOf(matches[0]) - 1);
+    optionsAndFlags["contentNoFlags"] = matches.reduce((acc, current) => acc.replace(new RegExp(current, "g"), ""), args.join(" ")).replace(/ +/g, " ");
+    return optionsAndFlags;
+}
 
   // By Voltrex Master
 }
