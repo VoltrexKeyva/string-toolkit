@@ -1,7 +1,7 @@
 declare options {
-  elapsedChar?: string,
-  progressChar?: string,
-  emptyChar?: string
+  elapsedChar?: string;
+  progressChar?: string;
+  emptyChar?: string;
 }
 
 declare OptionsAndFlagsObject {
