@@ -210,7 +210,7 @@ class Functions {
   shorten(string, length, placeholder) {
     if (typeof string !== "string") throw new TypeError("First parameter must be a type of string");
     if (!Number.isInteger(length)) throw new TypeError("Second parameter must be a type of number");
-    return string.length > length ? string.slice(0, length) + (placeholder ? placeholder.toString() : "...") : string
+    return string.length > length ? string.slice(0, length) + (placeholder ? placeholder.toString() : "...") : string;
   }
 
   /**
