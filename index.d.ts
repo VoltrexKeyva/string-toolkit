@@ -16,12 +16,12 @@ declare class Functions {
     this.version: string;
   }
   
-  toProperCase(string: string, lowerCaseBoolean: boolean): string;
+  toProperCase(string: string, lowerCaseBoolean?: boolean): string;
   toChunks(string: string, ChunkBy: number): string[];
   scramble(string: string): string;
   mock(string: string): string;
   emojify(string: string): string;
-  hasCustomEmoji(string: string): number | "No custom emoji detected";
+  hasCustomEmoji(string: string): boolean;
   createProgressBar(inTotal: number, Total: number, options?: options): string;
   toAbbreviation(string: string): string;
   fakeToken(): string;
