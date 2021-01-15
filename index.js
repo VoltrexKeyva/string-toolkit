@@ -26,13 +26,9 @@ class Functions {
 
     if (!Number.isInteger(ChunkBy)) throw new TypeError('Second parameter must be a type of number');
     
-    let chunksNum = Math.ceil(string.length / ChunkBy);
-    let chunks = new Array(chunksNum);
-    for (let i = 0, o = 0; i < chunksNum; ++i, o += ChunkBy) {
-      chunks[i] = string.substr(o, ChunkBy);
-    }
-
-    return chunks;
+    return Array.from({
+      length: Math.ceil(string.length / ChunkBy)
+    }, (_, i) => string.slice(i * ChunkBy, i * ChunkBy + ChunkBy));
   }
 
   /**
