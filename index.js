@@ -39,21 +39,14 @@ class Functions {
   scramble(string) {
     if (typeof string !== 'string') throw new TypeError('First parameter must be a type of string');
 
-    function shuffle(array) {
-      let currentIndex, randomIndex, tempIndex;
-
-      for (currentIndex = array.length - 1; currentIndex > 0; currentIndex--) {
-        randomIndex = Math.floor(Math.random() * (currentIndex + 1));
-
-        tempIndex = array[currentIndex];
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = tempIndex;
-      }
-
-      return array;
-    }
-
-    return shuffle(string.split('')).join('');
+    let list = string.split('');
+	  let res = '';
+	  for (let h = 0; h < string.length; h++) {
+		  let i = Math.floor(Math.random() * list.length);
+		  res += list[i];
+		  list.splice(i, 1);
+	  }
+	  return res;
   }
 
   /**
@@ -192,34 +185,27 @@ class Functions {
    */
   parseOptions(args) {
     if (!Array.isArray(args) || !args.every(argument => typeof argument === 'string')) throw new TypeError('First parameter must be an array and every element must be a type of string');
-
-    let matches = args.filter(a => a.startsWith('--')),
-    joined = args.join(' '),
-    output = {
+    else if (!/ --/g.test(args.join(' '))) return { options: {}, flags: [], contentNoFlags: args.join(' '), contentNoOptions: args.join(' ') };
+    
+    let matches = args.filter(a => a.startsWith('--'));
+    let joined = args.join(' ');
+    let x = joined.indexOf(matches[0]);
+    let output = {
        options: {},
        flags: [],
-       contentNoOptions: joined,
-       contentNoFlags: joined
+       contentNoOptions: x <= 0 ? '' : joined.slice(0, x - 1),
+       contentNoFlags: x === -1 ? '' : args.filter(arg => !arg.startsWith('--')).join(' ')
     };
-    if (!matches.length) return output;
+    
     for (let match of matches) {
-       let m = args.slice(args.indexOf(match) + 1),
-       s = [];
-       for (let index of m) {
-          if (index.startsWith('--')) break;
-          s.push(index);
-       }
-       if (s.length) {
-          output.options[match.slice(2)] = s.join(' ');
-       } else {
+       let s = args.slice(args.indexOf(match) + 1).join(' ').split('--')[0].slice(0, -1);
+       if (s)
+          output.options[match.slice(2)] = s;
+       else
           output.flags.push(match.slice(2));
-       }
     }
-    let x = joined.indexOf(matches[0]);
-    output.contentNoOptions = x <= 0 ? '' : joined.slice(0, x - 1);
-    output.contentNoFlags = x === -1 ? '' : args.filter(arg => !arg.startsWith('--')).join(' ');
     return output;
-}
+  }
 
   // By Voltrex Master
 }
