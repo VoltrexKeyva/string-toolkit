@@ -1,10 +1,10 @@
-declare options {
+interface options {
   elapsedChar?: string;
   progressChar?: string;
   emptyChar?: string;
 }
 
-declare OptionsAndFlagsObject {
+interface OptionsAndFlagsObject {
   options: object;
   flags: string[];
   contentNoOptions: string;
@@ -12,9 +12,7 @@ declare OptionsAndFlagsObject {
 }
 
 declare class Functions {
-  constructor() {
-    this.version: string;
-  }
+  version: string;
   
   toProperCase(string: string, lowerCaseBoolean?: boolean): string;
   toChunks(string: string, ChunkBy: number): string[];
@@ -29,4 +27,4 @@ declare class Functions {
   parseOptions(args: string[]): OptionsAndFlagsObject;
 }
 
-export = Functions;
+export Functions;
