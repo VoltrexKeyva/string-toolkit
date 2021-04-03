@@ -5,7 +5,7 @@ interface options {
 }
 
 interface OptionsAndFlagsObject {
-  options: object;
+  options: { [option: string]: string; };
   flags: string[];
   contentNoOptions: string;
   contentNoFlags: string;
