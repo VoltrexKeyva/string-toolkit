@@ -63,9 +63,9 @@ class Functions {
    */
   mock(string) {
     if (typeof string !== 'string') throw new TypeError('First parameter must be a type of string');
-    let res = "";
+    let res = '';
     const len = string.length;
-    for (let i=0; i < len; i++) res += (i + 1) % 2 === 0 ? string[i].toUpperCase():string[i];
+    for (let i = 0; i < len; i++) res += (i + 1) % 2 === 0 ? string[i].toUpperCase() : string[i];
     return res;
   }
 
