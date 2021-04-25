@@ -6,7 +6,7 @@ class Functions {
   /**
    * Proper cases a string.
    * @param {string} string String to proper case
-   * @param {boolean?} [lowerCaseBoolean] Whether or not to cast the string into lowercase before proper casing it
+   * @param {boolean} [lowerCaseBoolean] Whether or not to cast the string into lowercase before proper casing it
    * @returns {string}
    */
   toProperCase(string, lowerCaseBoolean) {
@@ -117,7 +117,7 @@ class Functions {
    * @property {string} progressChar Character for the current progress
    * @property {string} emptyChar Character to fill the empty portion of the progress bar or in other words, the unreached portion
    * @property {number} barLength Length of the progress bar in chars
-   * @param {progressBarOptions?} [options] Options for the progress bar
+   * @param {progressBarOptions} [options] Options for the progress bar
    * @returns {string}
    */
   createProgressBar(inTotal, Total, options = {}) {
@@ -173,7 +173,7 @@ class Functions {
    * Shortens a string by a specified amount
    * @param {string} string String to shorten
    * @param {number} length Amount of chars to shorten by
-   * @param {string?} [placeholder] The string to concatenate to be shortened string
+   * @param {string} [placeholder] The string to concatenate to be shortened string
    * @returns {string}
    */
   shorten(string, length, placeholder) {
@@ -221,9 +221,15 @@ class Functions {
     output.contentNoOptions = x <= 0 ? '' : joined.slice(0, x - 1);
     output.contentNoFlags = x === -1 ? '' : args.filter(arg => !arg.startsWith('--')).join(' ');
     return output;
+  }
 }
 
-  // By Voltrex Master
+{
+  const instance = new Functions();
+
+  for (const key of Object.getOwnPropertyNames(Object.getPrototypeOf(instance)).filter(k => k !== 'constructor')) {
+    Functions[key] = instance[key];
+  }
 }
 
 module.exports = Functions;
