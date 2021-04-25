@@ -10,13 +10,17 @@ npm i string-toolkit
 ## Usage
 
 ```js
-const stringTools = new (require('string-toolkit'));
+// Creating a new instance.
+const stringTools = new (require('string-toolkit'))();
+
+// Can also be used without a new instance.
+const stringTools = require('string-toolkit');
 ```
 
 ## Example
 
 ```js
-const stringTools = new (require('string-toolkit'));
+const stringTools = require('string-toolkit');
 
 console.log(stringTools.toProperCase('hey there!'));
 ```
