@@ -24,10 +24,10 @@ const emojiObject = {
 
 /**
  * @typedef {Object} OptionsAndFlagsObject
- * @property {Object} OptionsAndFlagsObject.options All the parsed options.
- * @property {string[]} OptionsAndFlagsObject.flags All the parsed flags.
- * @property {string} OptionsAndFlagsObject.contentNoOptions All the provided strings in the array concatenated without the options.
- * @property {string} OptionsAndFlagsObject.contentNoFlags All the provided strings in the array concatenated without the flags.
+ * @property {Object} options All the parsed options.
+ * @property {string[]} flags All the parsed flags.
+ * @property {string} contentNoOptions All the provided strings in the array concatenated without the options.
+ * @property {string} contentNoFlags All the provided strings in the array concatenated without the flags.
  */
 
 /**
