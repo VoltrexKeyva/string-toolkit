@@ -20,5 +20,6 @@
     "type": "git",
     "url": "git+https://github.com/VoltrexMaster/string-toolkit.git"
   },
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {}
 }
