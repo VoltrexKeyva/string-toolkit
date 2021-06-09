@@ -65,7 +65,7 @@ console.log(output); // 'hEy tHeRe!'
 const output = stringTools.emojify('hey there!');
 
 console.log(output);
-// ':regional_indicator_h::regional_indicator_e::regional_indicator_y: :regional_indicator_t::regional_indicator_h::regional_indicator_e::regional_indicator_r::regional_indicator_e::exclamation:'
+// '🇭🇪🇾 🇹🇭🇪🇷🇪❗'
 ```
 
 ### `hasCustomEmoji(string)`

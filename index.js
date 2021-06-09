@@ -1,3 +1,43 @@
+const emojiObject = {
+  0: '\u0030\u20E3', 1: '\u0031\u20E3',
+  2: '\u0032\u20E3', 3: '\u0033\u20E3',
+  4: '\u0034\u20E3', 5: '\u0035\u20E3',
+  6: '\u0036\u20E3', 7: '\u0037\u20E3',
+  8: '\u0038\u20E3', 9: '\u0039\u20E3',
+  10: '\ud83d\udd1f', a: '\ud83c\udde6',
+  b: '\ud83c\udde7', c: '\ud83c\udde8',
+  d: '\ud83c\udde9', e: '\ud83c\uddea',
+  f: '\ud83c\uddeb', g: '\ud83c\uddec',
+  h: '\ud83c\udded', i: '\ud83c\uddee',
+  j: '\ud83c\uddef', k: '\ud83c\uddf0',
+  l: '\ud83c\uddf1', m: '\ud83c\uddf2',
+  n: '\ud83c\uddf3', o: '\ud83c\uddf4',
+  p: '\ud83c\uddf5', q: '\ud83c\uddf6',
+  r: '\ud83c\uddf7', s: '\ud83c\uddf8',
+  t: '\ud83c\uddf9', u: '\ud83c\uddfa',
+  v: '\ud83c\uddfb', w: '\ud83c\uddfc',
+  x: '\ud83c\uddfd', y: '\ud83c\uddfe',
+  z: '\ud83c\uddff', ' ': ' ',
+  '!': '\u2757', '?': '\u2753',
+  '#': '\u0023\ufe0f\u20e3','*': '\u002a\ufe0f\u20e3'
+};
+
+/**
+ * @typedef {Object} OptionsAndFlagsObject
+ * @property {Object} options All the parsed options.
+ * @property {string[]} flags All the parsed flags.
+ * @property {string} contentNoOptions All the provided strings in the array concatenated without the options.
+ * @property {string} contentNoFlags All the provided strings in the array concatenated without the flags.
+ */
+
+/**
+ * @typedef {Object} progressBarOptions
+ * @property {string} elapsedChar Character to fill the elapsed portion of the progress bar
+ * @property {string} progressChar Character for the current progress
+ * @property {string} emptyChar Character to fill the empty portion of the progress bar or in other words, the unreached portion
+ * @property {number} barLength Length of the progress bar in chars
+ */
+
 class Functions {
   constructor() {
     this.version = require('./package.json').version;
@@ -63,10 +103,9 @@ class Functions {
    */
   mock(string) {
     if (typeof string !== 'string') throw new TypeError('First parameter must be a type of string');
-    let res = '';
-    const len = string.length;
-    for (let i = 0; i < len; i++) res += (i + 1) % 2 === 0 ? string[i].toUpperCase() : string[i];
-    return res;
+    let str = string.split('');
+    for (let i = 0; i < string.length; i += 2) str[i] = str[i].toUpperCase();
+    return str.join('');
   }
 
   /**
@@ -76,25 +115,7 @@ class Functions {
    */
   emojify(string) {
     if (typeof string !== 'string') throw new TypeError('First parameter must be a type of string');
-
-    let specialObj = {
-      0: ':zero:',
-      1: ':one:',
-      2: ':two:',
-      3: ':three:',
-      4: ':four:',
-      5: ':five:',
-      6: ':six:',
-      7: ':seven:',
-      8: ':eight:',
-      9: ':nine:',
-      10: ':keycap_ten:',
-      ' ': ' ',
-      '!': ':exclamation:',
-      '?': ':question:'
-    };
-
-    return string.toLowerCase().split('').reduce((acc, current) => acc + (specialObj[current] || (/\w/.test(current) ? `:regional_indicator_${current}:` : undefined) || current), '');
+    return string.toLowerCase().split('').map(x => emojiObject[x] || x).join('');
   }
 
   /**
@@ -104,7 +125,6 @@ class Functions {
    */
   hasCustomEmoji(string) {
     if (typeof string !== 'string') throw new TypeError('First parameter must be a type of string');
-
     return /<a?:(\w{2,32}):(\d{17,19})>/.test(string);
   }
 
@@ -112,18 +132,12 @@ class Functions {
    * Creates a progress bar.
    * @param {number} inTotal Elapsed
    * @param {number} Total Goal
-   * @typedef {Object} progressBarOptions
-   * @property {string} elapsedChar Character to fill the elapsed portion of the progress bar
-   * @property {string} progressChar Character for the current progress
-   * @property {string} emptyChar Character to fill the empty portion of the progress bar or in other words, the unreached portion
-   * @property {number} barLength Length of the progress bar in chars
    * @param {progressBarOptions} [options] Options for the progress bar
    * @returns {string}
    */
   createProgressBar(inTotal, Total, options = {}) {
     if (!Number.isInteger(inTotal) || !Number.isInteger(Total)) throw new TypeError('the first and the second parameters are required and must be a type of number.');
-
-    if (inTotal > Total) throw new RangeError('First parameter must be lesser than the second parameter');
+    if (inTotal > Total) throw new RangeError('First parameter must be less than the second parameter');
 
     options = {
       elapsedChar: typeof options.elapsedChar === 'string' ? options.elapsedChar : '=',
@@ -133,7 +147,6 @@ class Functions {
     };
 
     let available = (inTotal / Total) * options.barLength;
-
     let progressBar = options.elapsedChar.repeat(available) + options.progressChar + options.emptyChar.repeat(options.barLength - (available + (inTotal === Total ? 0 : 1)));
     return progressBar.length > options.barLength ? progressBar.slice(0, options.barLength) : progressBar;
   }
@@ -145,8 +158,7 @@ class Functions {
    */
   toAbbreviation(string) {
     if (typeof string !== 'string') throw new TypeError('First parameter must be a type of string');
-
-    return string.includes(' ') ? string.trim().split(' ').map(element => element[0]).join('') : string;
+    return string.trim().split(' ').map(element => element[0]).join('');
   }
 
   /**
@@ -185,11 +197,6 @@ class Functions {
   /**
    * Parses options and flags from an array of strings.
    * @param {string[]} args Array of strings to parse options and flags from.
-   * @typedef {Object} OptionsAndFlagsObject
-   * @property {Object} OptionsAndFlagsObject.options All the parsed options.
-   * @property {string[]} OptionsAndFlagsObject.flags All the parsed flags.
-   * @property {string} OptionsAndFlagsObject.contentNoOptions All the provided strings in the array concatenated without the options.
-   * @property {string} OptionsAndFlagsObject.contentNoFlags All the provided strings in the array concatenated without the flags.
    * @returns {OptionsAndFlagsObject}
    */
   parseOptions(args) {
@@ -211,11 +218,10 @@ class Functions {
           if (index.startsWith('--')) break;
           s.push(index);
        }
-       if (s.length) {
+       if (s.length)
           output.options[match.slice(2)] = s.join(' ');
-       } else {
+       else
           output.flags.push(match.slice(2));
-       }
     }
     let x = joined.indexOf(matches[0]);
     output.contentNoOptions = x <= 0 ? '' : joined.slice(0, x - 1);
@@ -224,12 +230,9 @@ class Functions {
   }
 }
 
-{
-  const instance = new Functions();
-
-  for (const key of Object.getOwnPropertyNames(Object.getPrototypeOf(instance)).filter(k => k !== 'constructor')) {
-    Functions[key] = instance[key];
-  }
+const instance = new Functions();
+for (const key of Object.getOwnPropertyNames(Object.getPrototypeOf(instance)).filter(k => k !== 'constructor')) {
+  Functions[key] = instance[key];
 }
 
 module.exports = Functions;
