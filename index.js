@@ -188,6 +188,7 @@ class Functions {
    */
   decancer(text) {
     if (typeof text !== 'string') throw new TypeError('First parameter must be a type of string');
+    if (!/[^\u0000-\u007F]/.test(text)) return text; // all of the characters are basic latin. ignore.
     
     text = text
       .toLowerCase()
