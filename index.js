@@ -258,10 +258,10 @@ class Functions {
       .replace(cleanerRegex, "");
 
     for (let i = 0; i < 10; i++)
-        text = text.replace(new RegExp(`[${numericalCodes.map(x => String.fromCodePoint(x + i)).join("")}]`, "gi"), numbers[i]);
+      text = text.replace(new RegExp(`[${numericalCodes.map(x => String.fromCodePoint(x + i)).join("")}]`, "gi"), numbers[i]);
 
     for (let i = 0; i < 26; i++)
-        text = text.replace(new RegExp(`[${azCodes.map(x => String.fromCodePoint(x + i)).join("")}${extraAlphabetRegexes[i]}]`, "gi"), alphabet[i]);
+      text = text.replace(new RegExp(`[${azCodes.map(x => String.fromCodePoint(x + i)).join("")}${extraAlphabetRegexes[i]}]`, "gi"), alphabet[i]);
 
     return text;
   }
