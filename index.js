@@ -252,12 +252,12 @@ class Functions {
    * @param {string} text The cancerous string to decancer.
    * @returns {string} The cleaned string. This may break certain things like special characters. Only use for certain purposes like filtering/censoring.
    */
-  decancer(text) => {
+  decancer(text) {
     if (typeof text !== 'string') throw new TypeError('First parameter must be a type of string');
     
     text = text
       .toLowerCase()
-      .replace(cleanerRegex, "");
+      .replace(cleanerRegex, '');
 
     for (let i = 0; i < 10; i++)
       text = text.replace(new RegExp(`[${numericalCodes.map(x => String.fromCodePoint(x + i)).join('')}]`, 'gi'), numbers[i]);
