@@ -23,6 +23,7 @@ declare class Functions {
   createProgressBar(inTotal: number, Total: number, options?: options): string;
   toAbbreviation(string: string): string;
   fakeToken(): string;
+  decancer(text: string): string;
   shorten(string: string, length: number, placeholder?: string): string;
   parseOptions(args: string[]): OptionsAndFlagsObject;
 }

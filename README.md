@@ -106,6 +106,14 @@ console.log(output);
 // 'NDI0NTYyNzY1NTMzNzQ0MjY3MA==.Cz0j0.Zf6Tfo17wN27N8tnkoG164Q9'
 ```
 
+### `decancer(string)`
+
+```js
+const output = stringTools.decancer('𝓱𝓮𝔂 𝓽𝓱𝓮𝓻𝓮!');
+
+console.log(output); // 'hey there!'
+```
+
 ### `shorten(string, number[, string])`
 
 ```js
