@@ -6,7 +6,7 @@ const {
   cleanerRegex,
   extraAlphabetRegexes,
   emojiObject,
-} = require("./constants.js");
+} = require('./constants.js');
 
 /**
  * @typedef {Object} OptionsAndFlagsObject
