@@ -6,6 +6,7 @@ const {
   cleanerRegex,
   extraAlphabetRegexes,
   emojiObject,
+  nonAlphabetStrings
 } = require('./constants.js');
 
 /**
@@ -181,14 +182,14 @@ class Functions {
   }
 
   /**
-   * Decancers a string. Reduces everything from zalgos, fancy characters, etc. to alphanumeric characters.
+   * Decancers a string. Reduces everything from zalgos, fancy characters, cyrillic symbols, fullwidth characters, etc. to alphanumeric characters.
    * NOTE: The string returned will ALWAYS be in lowercase.
    * @param {string} text The cancerous string to decancer.
    * @returns {string} The cleaned string. This may break certain things like special characters. Only use for certain purposes like filtering/censoring.
    */
   decancer(text) {
     if (typeof text !== 'string') throw new TypeError('First parameter must be a type of string');
-    if (!/[^\u0000-\u007F]/.test(text)) return text; // all of the characters are basic latin. ignore.
+    if (!/[^\u0000-\u007F]/.test(text)) return text;
     
     text = text
       .toLowerCase()
@@ -199,6 +200,9 @@ class Functions {
 
     for (let i = 0; i < 26; i++)
       text = text.replace(new RegExp(`[${azCodes.map(x => String.fromCodePoint(x + i)).join('')}${extraAlphabetRegexes[i]}]`, 'gi'), alphabet[i]);
+
+    for (const [k, v] of Object.entries(nonAlphabetStrings))
+      text = text.replace(new RegExp(`[${v}]`, 'gi'), k);
 
     return text;
   }
