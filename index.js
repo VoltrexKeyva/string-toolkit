@@ -65,21 +65,10 @@ class Functions {
    */
   scramble(string) {
     if (typeof string !== 'string') throw new TypeError('First parameter must be a type of string');
-
-    function shuffle(array) {
-      let currentIndex, randomIndex, tempIndex;
-
-      for (currentIndex = array.length - 1; currentIndex > 0; currentIndex--) {
-        randomIndex = Math.floor(Math.random() * (currentIndex + 1));
-
-        tempIndex = array[currentIndex];
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = tempIndex;
-      }
-
-      return array;
-    }
-
+    
+    let shuffle = (a, l = a.length, r = ~~(Math.random() * l)) => l ? ([a[r], a[l - 1]] = [a[l - 1], a[r]], shuffle(a, l - 1)) : a
+    
+    
     return shuffle(string.split('')).join('');
   }
 
