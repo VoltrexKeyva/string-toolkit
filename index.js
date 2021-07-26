@@ -1,13 +1,6 @@
-const {
-  azCodes,
-  numericalCodes,
-  alphabet,
-  numbers,
-  cleanerRegex,
-  extraAlphabetRegexes,
-  emojiObject,
-  nonAlphabetStrings
-} = require('./constants.js');
+const emojiObject = require('./emojis.js');
+const decancerFunc = require('decancer');
+const shuffle = (a, l = a.length, r = ~~(Math.random() * l)) => l ? ([a[r], a[l - 1]] = [a[l - 1], a[r]], shuffle(a, l - 1)) : a;
 
 /**
  * @typedef {Object} OptionsAndFlagsObject
@@ -65,10 +58,6 @@ class Functions {
    */
   scramble(string) {
     if (typeof string !== 'string') throw new TypeError('First parameter must be a type of string');
-    
-    let shuffle = (a, l = a.length, r = ~~(Math.random() * l)) => l ? ([a[r], a[l - 1]] = [a[l - 1], a[r]], shuffle(a, l - 1)) : a
-    
-    
     return shuffle(string.split('')).join('');
   }
 
@@ -177,23 +166,7 @@ class Functions {
    * @returns {string} The cleaned string. This may break certain things like special characters. Only use for certain purposes like filtering/censoring.
    */
   decancer(text) {
-    if (typeof text !== 'string') throw new TypeError('First parameter must be a type of string');
-    if (!/[^\u0000-\u007F]/.test(text)) return text;
-    
-    text = text
-      .toLowerCase()
-      .replace(cleanerRegex, '');
-
-    for (let i = 0; i < 10; i++)
-      text = text.replace(new RegExp(`[${numericalCodes.map(x => String.fromCodePoint(x + i)).join('')}]`, 'gi'), numbers[i]);
-
-    for (let i = 0; i < 26; i++)
-      text = text.replace(new RegExp(`[${azCodes.map(x => String.fromCodePoint(x + i)).join('')}${extraAlphabetRegexes[i]}]`, 'gi'), alphabet[i]);
-
-    for (const [k, v] of Object.entries(nonAlphabetStrings))
-      text = text.replace(new RegExp(`[${v}]`, 'gi'), k);
-
-    return text;
+    return decancerFunc(text);
   }
 
   /**

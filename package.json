@@ -21,5 +21,7 @@
     "url": "git+https://github.com/VoltrexMaster/string-toolkit.git"
   },
   "license": "ISC",
-  "dependencies": {}
+  "dependencies": {
+    "decancer": "1.0.4"
+  }
 }
