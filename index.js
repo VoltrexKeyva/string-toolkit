@@ -1,5 +1,6 @@
 const emojiObject = require('./emojis.js');
 const decancerFunc = require('decancer');
+const shuffle = (a, l = a.length, r = ~~(Math.random() * l)) => l ? ([a[r], a[l - 1]] = [a[l - 1], a[r]], shuffle(a, l - 1)) : a;
 
 /**
  * @typedef {Object} OptionsAndFlagsObject
@@ -57,10 +58,6 @@ class Functions {
    */
   scramble(string) {
     if (typeof string !== 'string') throw new TypeError('First parameter must be a type of string');
-    
-    let shuffle = (a, l = a.length, r = ~~(Math.random() * l)) => l ? ([a[r], a[l - 1]] = [a[l - 1], a[r]], shuffle(a, l - 1)) : a
-    
-    
     return shuffle(string.split('')).join('');
   }
 
