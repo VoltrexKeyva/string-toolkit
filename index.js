@@ -1,22 +1,5 @@
-const emojiObject = require('./emojis.js');
+const addon = require("./build/Release/string-toolkit")
 const decancerFunc = require('decancer');
-const shuffle = (a, l = a.length, r = ~~(Math.random() * l)) => l ? ([a[r], a[l - 1]] = [a[l - 1], a[r]], shuffle(a, l - 1)) : a;
-
-/**
- * @typedef {Object} OptionsAndFlagsObject
- * @property {Object} options All the parsed options.
- * @property {string[]} flags All the parsed flags.
- * @property {string} contentNoOptions All the provided strings in the array concatenated without the options.
- * @property {string} contentNoFlags All the provided strings in the array concatenated without the flags.
- */
-
-/**
- * @typedef {Object} progressBarOptions
- * @property {string} elapsedChar Character to fill the elapsed portion of the progress bar
- * @property {string} progressChar Character for the current progress
- * @property {string} emptyChar Character to fill the empty portion of the progress bar or in other words, the unreached portion
- * @property {number} barLength Length of the progress bar in chars
- */
 
 class Functions {
   constructor() {
@@ -29,11 +12,7 @@ class Functions {
    * @param {boolean} [lowerCaseBoolean] Whether or not to cast the string into lowercase before proper casing it
    * @returns {string}
    */
-  toProperCase(string, lowerCaseBoolean) {
-    if (typeof string !== 'string') throw new TypeError('First parameter must be a type of string');
-
-    return (lowerCaseBoolean !== true ? string : string.toLowerCase()).replace(/(\b\w)/gi, w => w.toUpperCase());
-  }
+  toProperCase = addon.toProperCase;
 
   /**
    * Chunks a string to the specified amount of chars.
@@ -41,57 +20,35 @@ class Functions {
    * @param {number} ChunkBy Amount of chars to chunk by
    * @returns {string[]}
    */
-  toChunks(string, ChunkBy) {
-    if (typeof string !== 'string') throw new TypeError('First parameter must be a type of string');
-
-    if (!Number.isInteger(ChunkBy)) throw new TypeError('Second parameter must be a type of number');
-    
-    return Array.from({
-      length: Math.ceil(string.length / ChunkBy)
-    }, (_, i) => string.slice(i * ChunkBy, i * ChunkBy + ChunkBy));
-  }
+  toChunks = addon.toChunks;
 
   /**
    * Scrambles a string.
    * @param {string} string String to scramble
    * @returns {string}
    */
-  scramble(string) {
-    if (typeof string !== 'string') throw new TypeError('First parameter must be a type of string');
-    return shuffle(string.split('')).join('');
-  }
+  scramble = addon.scramble;
 
   /**
    * Mocks a string.
    * @param {string} string String to mock
    * @returns {string}
    */
-  mock(string) {
-    if (typeof string !== 'string') throw new TypeError('First parameter must be a type of string');
-    let str = string.split('');
-    for (let i = 0; i < string.length; i += 2) str[i] = str[i].toUpperCase();
-    return str.join('');
-  }
+  mock = addon.mock;
 
   /**
    * Emojifies a string.
    * @param {string} string String to emojify
    * @returns {string}
    */
-  emojify(string) {
-    if (typeof string !== 'string') throw new TypeError('First parameter must be a type of string');
-    return string.toLowerCase().split('').map(x => emojiObject[x] || x).join('');
-  }
+  emojify = addon.emojify;
 
   /**
    * This function is related to discord, checks if the string contains a custom emoji.
    * @param {string} string String to check whether or not it has a custom emoji
    * @returns {boolean}
    */
-  hasCustomEmoji(string) {
-    if (typeof string !== 'string') throw new TypeError('First parameter must be a type of string');
-    return /<a?:(\w{2,32}):(\d{17,19})>/.test(string);
-  }
+  hasCustomEmoji = addon.hasCustomEmoji;
 
   /**
    * Creates a progress bar.
@@ -121,30 +78,13 @@ class Functions {
    * @param {string} string String to get an abbreviation of
    * @returns {string}
    */
-  toAbbreviation(string) {
-    if (typeof string !== 'string') throw new TypeError('First parameter must be a type of string');
-    return string.trim().split(' ').map(element => element[0]).join('');
-  }
+  toAbbreviation = addon.toAbbreviation;
 
   /**
    * This function is related to discord bot's tokens, generating a fake token.
    * @returns {string}
    */
-  fakeToken() {
-    let IDs = [17, 18, 19],
-      chars = [...'abcdefghijklmnopqrstuvwxyz1234567890'],
-      options = [0, 1];
-    return (Buffer.from(Array.from({
-      length: IDs[Math.floor(Math.random() * IDs.length)]
-    }, () => {
-      let nums = Array.from({
-        length: 10
-      }, (a, r) => r);
-      return nums[Math.floor(Math.random() * nums.length)];
-    }).join('')).toString('base64') + '.' + Array.from({
-      length: 50
-    }, (a, r) => r === 5 ? '.' : chars[Math.floor(Math.random() * chars.length)]).reduce((acc, current) => (acc += options[Math.floor(Math.random() * options.length)] === 1 ? current.toUpperCase() : current, acc), '')).slice(0, 59);
-  }
+  fakeToken = addon.fakeToken;
 
   /**
    * Shortens a string by a specified amount
@@ -153,11 +93,7 @@ class Functions {
    * @param {string} [placeholder] The string to concatenate to be shortened string
    * @returns {string}
    */
-  shorten(string, length, placeholder) {
-    if (typeof string !== 'string') throw new TypeError('First parameter must be a type of string');
-    if (!Number.isInteger(length)) throw new TypeError('Second parameter must be a type of number');
-    return string.length > length ? string.slice(0, length) + (placeholder ? placeholder.toString() : '...') : string;
-  }
+  shorten = addon.shorten;
 
   /**
    * Decancers a string. Reduces everything from zalgos, fancy characters, cyrillic symbols, fullwidth characters, etc. to alphanumeric characters.
@@ -165,9 +101,7 @@ class Functions {
    * @param {string} text The cancerous string to decancer.
    * @returns {string} The cleaned string. This may break certain things like special characters. Only use for certain purposes like filtering/censoring.
    */
-  decancer(text) {
-    return decancerFunc(text);
-  }
+  decancer = decancerFunc;
 
   /**
    * Parses options and flags from an array of strings.
@@ -209,5 +143,4 @@ const instance = new Functions();
 for (const key of Object.getOwnPropertyNames(Object.getPrototypeOf(instance)).filter(k => k !== 'constructor')) {
   Functions[key] = instance[key];
 }
-
 module.exports = Functions;
