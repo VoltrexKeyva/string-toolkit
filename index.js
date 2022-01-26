@@ -1,4 +1,4 @@
-const addon = require("./build/Release/string-toolkit")
+const addon = require("./build/Release/string-toolkit");
 const decancerFunc = require('decancer');
 
 class Functions {
