@@ -79,7 +79,7 @@ static void ToProperCase(const FunctionCallbackInfo<Value> & args) {
         TypeError(isolate, "First parameter must be a type of string");
     }
     
-    const bool lowercase = !(args.Length() > 1 && !args[1]->ToBoolean(isolate)->Value());
+    const bool lowercase = !(args[1]->IsBoolean() && !args[1]->ToBoolean(isolate)->Value());
     
     uint8_t status = TA_WHITESPACE;
     String::Value value(isolate, args[0]);
