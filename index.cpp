@@ -26,9 +26,9 @@ static void Mock(const FunctionCallbackInfo<Value> & args) {
     
     for (uint32_t i = 0; i < length; i++) {
         if ((i % 2) == 0) {
-            str[i] = toupper(str[i]);
+            str[i] = ::toupper(str[i]);
         } else {
-            str[i] = tolower(str[i]);
+            str[i] = ::tolower(str[i]);
         }
     }
     
@@ -93,10 +93,10 @@ static void ToProperCase(const FunctionCallbackInfo<Value> & args) {
             }
         } else {
             if (status == TA_WHITESPACE) {
-                str[i] = toupper(str[i]);
+                str[i] = ::toupper(str[i]);
                 status = TA_WAITING_FOR_WHITESPACE;
             } else if (lowercase) {
-                str[i] = tolower(str[i]);
+                str[i] = ::tolower(str[i]);
             }
         }
     }
@@ -154,7 +154,7 @@ static void Emojify(const FunctionCallbackInfo<Value> & args) {
             res[result_length] = 0x2757;
         } else if (ptr[i] == '?') {
             res[result_length] = 0x2753;
-        } else if ((ptr[i] = tolower(ptr[i])) >= 'a' && ptr[i] <= 'z') {
+        } else if ((ptr[i] = ::tolower(ptr[i])) >= 'a' && ptr[i] <= 'z') {
             res[result_length]   = 0xd83c;
             res[++result_length] = ptr[i] - 'a' + 0xdde6;
         } else {
@@ -275,9 +275,11 @@ static void HasCustomEmoji(const FunctionCallbackInfo<Value> & args) {
     
     i++;
     for (; i < length; i++) {
+        c = ptr[i];
+        
         switch (status) {
             case HCE_FIRST_TWO_CHARS: {
-                if ((c = ptr[i]) == 'a') {
+                if (c == 'a') {
                     if (data) {
                         goto HCE_Fail;
                     }
@@ -296,7 +298,7 @@ static void HasCustomEmoji(const FunctionCallbackInfo<Value> & args) {
                 if (data > 32)
                     goto HCE_Fail;
                 
-                else if (((c = ptr[i]) >= 'a' && c <= 'z') ||
+                else if ((c >= 'a' && c <= 'z') ||
                     (c >= 'A' && c <= 'Z') ||
                     (c >= '0' && c <= '9') || c == '_') {
                     data++;
@@ -314,7 +316,7 @@ static void HasCustomEmoji(const FunctionCallbackInfo<Value> & args) {
                 if (data > 19)
                     goto HCE_Fail;
                 
-                else if ((c = ptr[i]) >= '0' && c <= '9') {
+                else if (c >= '0' && c <= '9') {
                     data++;
                     continue;
                 } else if (data >= 17 && data <= 32 && c == '>') {
