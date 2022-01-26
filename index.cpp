@@ -62,7 +62,7 @@ static void ToAbbreviation(const FunctionCallbackInfo<Value> & args) {
             }
         } else {
             if (status == TA_WHITESPACE) {
-                str[result_index++] = str[i];
+                str[result_index] = str[i];
                 status = TA_WAITING_FOR_WHITESPACE;
                 result_index++;
             }
