@@ -1,3 +1,5 @@
+"use strict";
+
 const addon = require("./build/Release/string-toolkit");
 const decancerFunc = require('decancer');
 
@@ -95,9 +97,9 @@ class Functions {
    * @returns {OptionsAndFlagsObject}
    */
   parseOptions(args) {
-    if (!Array.isArray(args) || !args.every(argument => typeof argument === 'string')) throw new TypeError('First parameter must be an array and every element must be a type of string');
+    if (!args?.every(argument => typeof argument === 'string')) throw new TypeError('First parameter must be an array and every element must be a type of string');
 
-    let matches = args.filter(a => a.startsWith('--')),
+    const matches = args.filter(a => a.startsWith('--')),
     joined = args.join(' '),
     output = {
        options: {},
@@ -106,10 +108,9 @@ class Functions {
        contentNoFlags: joined
     };
     if (!matches.length) return output;
-    for (let match of matches) {
-       let m = args.slice(args.indexOf(match) + 1),
-       s = [];
-       for (let index of m) {
+    for (const match of matches) {
+       const s = [];
+       for (const index of args.slice(args.indexOf(match) + 1)) {
           if (index.startsWith('--')) break;
           s.push(index);
        }
@@ -118,7 +119,7 @@ class Functions {
        else
           output.flags.push(match.slice(2));
     }
-    let x = joined.indexOf(matches[0]);
+    const x = joined.indexOf(matches[0]);
     output.contentNoOptions = x <= 0 ? '' : joined.slice(0, x - 1);
     output.contentNoFlags = x === -1 ? '' : args.filter(arg => !arg.startsWith('--')).join(' ');
     return output;
