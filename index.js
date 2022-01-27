@@ -1,6 +1,6 @@
-"use strict";
+'use strict';
 
-const addon = require("./build/Release/string-toolkit");
+const addon = require('./build/Release/string-toolkit.node');
 const decancerFunc = require('decancer');
 
 class Functions {
@@ -97,37 +97,53 @@ class Functions {
    * @returns {OptionsAndFlagsObject}
    */
   parseOptions(args) {
-    if (!args?.every(argument => typeof argument === 'string')) throw new TypeError('First parameter must be an array and every element must be a type of string');
+    if (
+      !Array.isArray(args) ||
+      !args.every((argument) => typeof argument === 'string')
+    )
+      throw new TypeError(
+        'First parameter must be an array and every element must be a type of string'
+      );
 
-    const matches = args.filter(a => a.startsWith('--')),
-    joined = args.join(' '),
-    output = {
-       options: {},
-       flags: [],
-       contentNoOptions: joined,
-       contentNoFlags: joined
-    };
-    if (!matches.length) return output;
+    const matches = args.filter((a) => a.startsWith('--')),
+      joined = args.join(' '),
+      output = {
+        options: {},
+        flags: [],
+        contentNoOptions: joined,
+        contentNoFlags: joined
+      };
+
+    if (matches.length === 0) return output;
+
     for (const match of matches) {
-       const s = [];
-       for (const index of args.slice(args.indexOf(match) + 1)) {
-          if (index.startsWith('--')) break;
-          s.push(index);
-       }
-       if (s.length)
-          output.options[match.slice(2)] = s.join(' ');
-       else
-          output.flags.push(match.slice(2));
+      const s = [];
+
+      for (const index of args.slice(args.indexOf(match) + 1)) {
+        if (index.startsWith('--')) break;
+
+        s.push(index);
+      }
+
+      if (s.length !== 0) output.options[match.slice(2)] = s.join(' ');
+      else output.flags.push(match.slice(2));
     }
+
     const x = joined.indexOf(matches[0]);
+
     output.contentNoOptions = x <= 0 ? '' : joined.slice(0, x - 1);
-    output.contentNoFlags = x === -1 ? '' : args.filter(arg => !arg.startsWith('--')).join(' ');
+    output.contentNoFlags =
+      x === -1 ? '' : args.filter((arg) => !arg.startsWith('--')).join(' ');
     return output;
   }
 }
 
 const instance = new Functions();
-for (const key of Object.getOwnPropertyNames(Object.getPrototypeOf(instance)).filter(k => k !== 'constructor')) {
+
+for (const key of Object.getOwnPropertyNames(Object.getPrototypeOf(instance))) {
+  if (key === 'constructor') continue;
+
   Functions[key] = instance[key];
 }
+
 module.exports = Functions;
