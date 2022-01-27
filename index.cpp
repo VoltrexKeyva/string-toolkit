@@ -385,6 +385,7 @@ static char * FakeTokenFirst(char * ptr) {
         
         while ((i++ < 3)) {
             *ptr = '=';
+            ptr++;
         }
     }
     
