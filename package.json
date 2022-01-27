@@ -1,6 +1,6 @@
 {
   "name": "string-toolkit",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "A package containing tools to manipulate a string.",
   "main": "index.js",
   "scripts": {
