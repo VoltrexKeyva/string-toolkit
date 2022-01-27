@@ -1,7 +1,10 @@
 #include <node.h>
 
+#include <algorithm>
+
 #include <cstdlib>
 #include <cctype>
+#include <cmath>
 #include <ctime>
 
 using namespace v8;
@@ -420,6 +423,96 @@ static void FakeToken(const FunctionCallbackInfo<Value> & args) {
     Return(args, String::NewFromUtf8(isolate, &result[0], NewStringType::kNormal, 59).ToLocalChecked());
 }
 
+#define GetCharOr(isolate, context, object, str, otherwise) _GetCharOr(isolate, context, object, str, sizeof(str) - 1, otherwise)
+
+static char _GetCharOr(Isolate * isolate, Local<Context> ctx, Local<Object> obj,
+                       const char * str, const uint8_t size, const char otherwise) {
+    
+    Local<String> s = String::NewFromUtf8(isolate, str, NewStringType::kNormal, size).ToLocalChecked();
+    
+    if (obj->Has(ctx, s).ToChecked()) {
+        Local<Value> val = obj->Get(ctx, s).ToLocalChecked();
+        
+        if (val->IsString()) {
+            String::Utf8Value value(isolate, val->ToString(ctx).ToLocalChecked());
+            
+            if (value.length() == 1) {
+                return (*value)[0];
+            }
+        }
+    }
+    
+    return otherwise;
+}
+
+#define GetNumberOr(isolate, context, obj, str, otherwise) _GetNumberOr(isolate, context, obj, str, sizeof(str) - 1, otherwise)
+
+static double _GetNumberOr(Isolate * isolate, Local<Context> ctx, Local<Object> obj,
+                             const char * str, const uint8_t size, uint32_t otherwise) {
+    
+    Local<String> s = String::NewFromUtf8(isolate, str, NewStringType::kNormal, size).ToLocalChecked();
+    
+    if (obj->Has(ctx, s).ToChecked()) {
+        Local<Value> val = obj->Get(ctx, s).ToLocalChecked();
+        
+        if (val->IsUint32()) {
+            const double value = val->ToNumber(ctx).ToLocalChecked()->Value();
+            
+            if (value != 0.0) {
+                return value;
+            }
+        }
+    }
+    
+    return otherwise;
+}
+
+static void CreateProgressBar(const FunctionCallbackInfo<Value> & args) {
+    Isolate * isolate = args.GetIsolate();
+    
+    if (!args[0]->IsNumber() || !args[1]->IsNumber()) {
+        TypeError(isolate, "the first and the second parameters are required and must be a type of number.");
+    }
+    
+    Local<Context> ctx = isolate->GetCurrentContext();
+    Local<Object> extra = args[2]->IsObject() ? args[2]->ToObject(ctx).ToLocalChecked() : Object::New(isolate);
+    
+    const char elapsed_char   = GetCharOr(isolate, ctx, extra, "elapsedChar", '=');
+    const char progress_char  = GetCharOr(isolate, ctx, extra, "progressChar", '>');
+    const char empty_char     = GetCharOr(isolate, ctx, extra, "emptyChar", '.');
+    
+    const double _bar_length  = GetNumberOr(isolate, ctx, extra, "barLength", 50.0);
+    const double total        = args[1]->ToNumber(ctx).ToLocalChecked()->Value();
+    
+    if (total <= 0.0) {
+        TypeError(isolate, "Invalid total.");
+    }
+    
+    const uint32_t available  = ::round((std::max<double>(args[0]->ToNumber(ctx).ToLocalChecked()->Value(), 0.0) / total) * _bar_length);
+    const uint32_t bar_length = static_cast<uint32_t>(_bar_length);
+    
+    char * ptr = reinterpret_cast<char *>(::malloc(bar_length + 1));
+
+    if (available > bar_length) {
+        ::memset(ptr, elapsed_char, bar_length);
+        goto progress_bar_created;
+    } else if (available < 49) {
+        ::memset(ptr + available + 1, empty_char, bar_length - available - 1);
+    }
+    
+    if (available != bar_length) {
+        ptr[available] = available ? progress_char : empty_char;
+    }
+    
+    if (available) {
+        ::memset(ptr, elapsed_char, available);
+    }
+    
+progress_bar_created:
+    Return(args, String::NewFromUtf8(isolate, ptr, NewStringType::kNormal, bar_length).ToLocalChecked());
+    ::free(ptr);
+}
+
 static inline void _ModuleExports(Isolate * isolate, Local<Context> ctx, Local<Object> exports,
                                   const char * name, FunctionCallback callback, const uint8_t size) {
     
@@ -442,4 +535,5 @@ extern "C" NODE_MODULE_EXPORT void NODE_MODULE_INITIALIZER(Local<Object> exports
     ModuleExports(isolate, context, exports, "toChunks", ToChunks);
     ModuleExports(isolate, context, exports, "hasCustomEmoji", HasCustomEmoji);
     ModuleExports(isolate, context, exports, "fakeToken", FakeToken);
+    ModuleExports(isolate, context, exports, "createProgressBar", CreateProgressBar);
 }

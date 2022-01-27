@@ -57,21 +57,7 @@ class Functions {
    * @param {progressBarOptions} [options] Options for the progress bar
    * @returns {string}
    */
-  createProgressBar(inTotal, Total, options = {}) {
-    if (!Number.isInteger(inTotal) || !Number.isInteger(Total)) throw new TypeError('the first and the second parameters are required and must be a type of number.');
-    if (inTotal > Total) throw new RangeError('First parameter must be less than the second parameter');
-
-    options = {
-      elapsedChar: typeof options.elapsedChar === 'string' ? options.elapsedChar : '=',
-      progressChar: typeof options.progressChar === 'string' ? options.progressChar : '>',
-      emptyChar: typeof options.emptyChar === 'string' ? options.emptyChar : '-',
-      barLength: Number.isInteger(options.barLength) ? options.barLength : 50
-    };
-
-    let available = (inTotal / Total) * options.barLength;
-    let progressBar = options.elapsedChar.repeat(available) + options.progressChar + options.emptyChar.repeat(options.barLength - (available + (inTotal === Total ? 0 : 1)));
-    return progressBar.length > options.barLength ? progressBar.slice(0, options.barLength) : progressBar;
-  }
+  createProgressBar = addon.createProgressBar;
 
   /**
    * Gets the abbreviation of a string.
