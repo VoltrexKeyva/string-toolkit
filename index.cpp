@@ -141,24 +141,27 @@ static void Emojify(const FunctionCallbackInfo<Value> & args) {
     
     uint32_t result_length = 0;
     uint16_t * res = reinterpret_cast<uint16_t *>(::malloc((length * 3 * sizeof(uint16_t)) + 1));
-
+    uint16_t temp;
+  
     for (int32_t i = 0; i < length; i++) {
-        if (ptr[i] >= '0' && ptr[i] <= '9') {
-            res[result_length]   = ptr[i];
+        temp = ptr[i];
+      
+        if (temp >= '0' && temp <= '9') {
+            res[result_length]   = temp;
             res[++result_length] = 0x20e3;
-        } else if (ptr[i] == '#' || ptr[i] == '*') {
-            res[result_length]   = ptr[i];
+        } else if (temp == '#' || temp == '*') {
+            res[result_length]   = temp;
             res[++result_length] = 0xfe0f;
             res[++result_length] = 0x20e3;
-        } else if (ptr[i] == '!') {
+        } else if (temp == '!') {
             res[result_length] = 0x2757;
-        } else if (ptr[i] == '?') {
+        } else if (temp == '?') {
             res[result_length] = 0x2753;
-        } else if ((ptr[i] = ::tolower(ptr[i])) >= 'a' && ptr[i] <= 'z') {
+        } else if ((temp >= 'a' && temp <= 'z') || (temp >= 'A' && temp <= 'Z')) {
             res[result_length]   = 0xd83c;
-            res[++result_length] = ptr[i] - 'a' + 0xdde6;
+            res[++result_length] = temp - (temp <= 'Z' ? 'A' : 'a') + 0xdde6;
         } else {
-            res[result_length] = ptr[i];
+            res[result_length] = temp;
         }
         
         result_length++;
