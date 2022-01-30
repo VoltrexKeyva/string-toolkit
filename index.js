@@ -140,10 +140,7 @@ class Functions {
 
 const instance = new Functions();
 
-for (const key of Object.getOwnPropertyNames(Object.getPrototypeOf(instance))) {
-  if (key === 'constructor') continue;
-
+for (const key of Object.getOwnPropertyNames(instance))
   Functions[key] = instance[key];
-}
 
 module.exports = Functions;
