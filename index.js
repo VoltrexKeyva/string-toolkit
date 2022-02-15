@@ -56,7 +56,7 @@ class Functions {
    * Creates a progress bar.
    * @param {number} inTotal Elapsed
    * @param {number} Total Goal
-   * @param {progressBarOptions} [options] Options for the progress bar
+   * @param {ProgressBarOptions} [options] Options for the progress bar
    * @returns {string}
    */
   createProgressBar = addon.createProgressBar;
