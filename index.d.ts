@@ -14,7 +14,7 @@ interface OptionsAndFlagsObject {
 declare class Functions {
   version: string;
   static version: string;
-  
+
   toProperCase(string: string, lowerCaseBoolean?: boolean): string;
   static toProperCase(string: string, lowerCaseBoolean?: boolean): string;
 
@@ -33,10 +33,16 @@ declare class Functions {
   hasCustomEmoji(string: string): boolean;
   static hasCustomEmoji(string: string): boolean;
 
-  createProgressBar(inTotal: number, Total: number,
-    options?: ProgressBarOptions): string;
-  static createProgressBar(inTotal: number, Total: number,
-    options?: ProgressBarOptions): string;
+  createProgressBar(
+    inTotal: number,
+    Total: number,
+    options?: ProgressBarOptions
+  ): string;
+  static createProgressBar(
+    inTotal: number,
+    Total: number,
+    options?: ProgressBarOptions
+  ): string;
 
   toAbbreviation(string: string): string;
   static toAbbreviation(string: string): string;
@@ -54,4 +60,4 @@ declare class Functions {
   static parseOptions(args: string[]): OptionsAndFlagsObject;
 }
 
-export Functions;
+export default Functions;
