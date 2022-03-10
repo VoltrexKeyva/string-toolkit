@@ -1,7 +1,7 @@
 <p align="center">
 <img src="https://repository-images.githubusercontent.com/286936061/a246689e-2e63-400f-bc8b-ab2f7393635e" width="320px" length="160px">
 </p>
-<p align="center"> Just a package containing tools to manipulate a string. </p>
+<h3 align="center"> Just a package containing tools to manipulate a string. </h3>
 </br>
 
 [![npm](https://img.shields.io/npm/dm/string-toolkit.svg)](https://www.npmjs.com/package/string-toolkit)
