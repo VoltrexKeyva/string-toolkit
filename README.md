@@ -1,5 +1,5 @@
 <p align="center">
-<img src="https://repository-images.githubusercontent.com/286936061/a246689e-2e63-400f-bc8b-ab2f7393635e" width="320px" length="160px">
+<img src="https://repository-images.githubusercontent.com/286936061/d0f93985-99fd-4089-ab45-8cfae21215fb" width="320px" length="160px">
 </p>
 <h3 align="center"> Just a package containing tools to manipulate a string. </h3>
 </br>
