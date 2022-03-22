@@ -22,6 +22,6 @@
   },
   "license": "ISC",
   "dependencies": {
-    "decancer": "1.0.4"
+    "decancer": "^1.0.0"
   }
 }
