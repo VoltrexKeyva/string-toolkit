@@ -482,36 +482,36 @@ static void CreateProgressBar(const FunctionCallbackInfo<Value> & args) {
     const char empty_char     = GetCharOr(isolate, ctx, extra, "emptyChar", '.');
     
     const double _bar_length  = GetNumberOr(isolate, ctx, extra, "barLength", 50.0);
+    double in_total           = args[0]->ToNumber(ctx).ToLocalChecked()->Value();
     const double total        = args[1]->ToNumber(ctx).ToLocalChecked()->Value();
     
-    if (total <= 0.0) {
-        TypeError(isolate, "Invalid total.");
+    if (_bar_length < 1 || in_total < 0 || total < 1) {
+        TypeError(isolate, "Invalid number input.");
+    } else if (total < in_total) {
+        TypeError(isolate, "Total must not be smaller than the current in total.");
+    } else if (in_total > total) {
+        in_total = total;
     }
     
-    const uint32_t available  = ::ceil((std::max<double>(args[0]->ToNumber(ctx).ToLocalChecked()->Value(), 0.0) / total) * _bar_length);
+    const uint32_t available  = ::floor((in_total / total) * _bar_length);
     const uint32_t bar_length = static_cast<uint32_t>(_bar_length);
     
-    char * ptr = new char[bar_length + 1];
-    ptr[bar_length] = 0;
+    const uint32_t remaining_length = bar_length - (available + (available != bar_length));
 
-    if (available > bar_length) {
-        ::memset(ptr, elapsed_char, bar_length);
-        goto progress_bar_created;
-    } else if (available < 49) {
-        ::memset(ptr + available + 1, empty_char, bar_length - available - 1);
+    char * result = new char[bar_length];
+    uint32_t result_len = 0;
+    
+    memset(result, elapsed_char, available);
+    result_len += available;
+    
+    if (remaining_length) {
+        memset(result + available, progress_char, 1);
+        memset(result + available + 1, empty_char, remaining_length);
+        result_len += remaining_length + 1;
     }
     
-    if (available != bar_length) {
-        ptr[available] = available ? progress_char : empty_char;
-    }
-    
-    if (available) {
-        ::memset(ptr, elapsed_char, available);
-    }
-    
-progress_bar_created:
-    Return(args, String::NewFromUtf8(isolate, ptr).ToLocalChecked());
-    delete[] ptr;
+    Return(args, String::NewFromUtf8(isolate, result, NewStringType::kNormal, std::min<uint32_t>(result_len, bar_length)).ToLocalChecked());
+    delete[] result;
 }
 
 static inline void _ModuleExports(Isolate * isolate, Local<Context> ctx, Local<Object> exports,

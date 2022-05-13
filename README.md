@@ -91,7 +91,7 @@ const output = stringTools.createProgressBar(57, 100, {
   barLength: 10
 });
 
-console.log(output); // '++++++@~~'
+console.log(output); // '+++++@~~~~'
 ```
 
 ### `toAbbreviation(string)`

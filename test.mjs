@@ -31,7 +31,7 @@ test('createProgressBar', () => {
     progressChar: '@',
     emptyChar: '~',
     barLength: 10
-  }), '+++++@~~~');
+  }), '+++++@~~~~');
 });
 
 test('toAbbreviation', () => {
