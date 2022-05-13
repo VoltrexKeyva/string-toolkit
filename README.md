@@ -61,7 +61,7 @@ console.log(output); // 'rte! ehyhe'
 ```js
 const output = stringTools.mock('hey there!');
 
-console.log(output); // 'hEy tHeRe!'
+console.log(output); // 'HeY ThErE!'
 ```
 
 ### `emojify(string)`

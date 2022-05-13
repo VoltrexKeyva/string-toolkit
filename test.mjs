@@ -18,7 +18,7 @@ test('toChunks', () => {
 });
 
 test('mock', () => {
-  assert.strict.equal(stringTools.mock('hey there!'), 'hEy tHeRe!');
+  assert.strict.equal(stringTools.mock('hey there!'), 'HeY ThErE!');
 });
 
 test('emojify', () => {
