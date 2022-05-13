@@ -491,8 +491,8 @@ static void CreateProgressBar(const FunctionCallbackInfo<Value> & args) {
     const uint32_t available  = ::ceil((std::max<double>(args[0]->ToNumber(ctx).ToLocalChecked()->Value(), 0.0) / total) * _bar_length);
     const uint32_t bar_length = static_cast<uint32_t>(_bar_length);
     
-    printf("%d\n", bar_length);
-    char * ptr = reinterpret_cast<char *>(::malloc(bar_length + 1));
+    char * ptr = new char[bar_length + 1];
+    ptr[bar_length] = 0;
 
     if (available > bar_length) {
         ::memset(ptr, elapsed_char, bar_length);
@@ -510,8 +510,8 @@ static void CreateProgressBar(const FunctionCallbackInfo<Value> & args) {
     }
     
 progress_bar_created:
-    Return(args, String::NewFromUtf8(isolate, ptr, NewStringType::kNormal, bar_length).ToLocalChecked());
-    ::free(ptr);
+    Return(args, String::NewFromUtf8(isolate, ptr).ToLocalChecked());
+    delete[] ptr;
 }
 
 static inline void _ModuleExports(Isolate * isolate, Local<Context> ctx, Local<Object> exports,
