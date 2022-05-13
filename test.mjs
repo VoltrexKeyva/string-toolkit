@@ -14,7 +14,12 @@ test('toProperCase', () => {
 });
 
 test('toChunks', () => {
-  assert.deepEqual(stringTools.toChunks('hey there!', 3), [ 'hey', ' th', 'ere', '!' ]);
+  assert.deepEqual(stringTools.toChunks('hey there!', 3), [
+    'hey',
+    ' th',
+    'ere',
+    '!'
+  ]);
 });
 
 test('mock', () => {
@@ -26,12 +31,15 @@ test('emojify', () => {
 });
 
 test('createProgressBar', () => {
-  assert.strict.equal(stringTools.createProgressBar(57, 100, {
-    elapsedChar: '+',
-    progressChar: '@',
-    emptyChar: '~',
-    barLength: 10
-  }), '+++++@~~~~');
+  assert.strict.equal(
+    stringTools.createProgressBar(57, 100, {
+      elapsedChar: '+',
+      progressChar: '@',
+      emptyChar: '~',
+      barLength: 10
+    }),
+    '+++++@~~~~'
+  );
 });
 
 test('toAbbreviation', () => {
@@ -40,8 +48,14 @@ test('toAbbreviation', () => {
 
 test('hasCustomEmoji', () => {
   assert.strict.equal(stringTools.hasCustomEmoji('hey there!'), false);
-  assert.strict.equal(stringTools.hasCustomEmoji('<:hello:12345678987654321>'), true);
-  assert.strict.equal(stringTools.hasCustomEmoji('<a:hello:12345678987654321>'), true);
+  assert.strict.equal(
+    stringTools.hasCustomEmoji('<:hello:12345678987654321>'),
+    true
+  );
+  assert.strict.equal(
+    stringTools.hasCustomEmoji('<a:hello:12345678987654321>'),
+    true
+  );
 });
 
 test('decancer', () => {
@@ -53,13 +67,18 @@ test('shorten', () => {
 });
 
 test('parseOptions', () => {
-  assert.deepEqual(stringTools.parseOptions('bruh --moment what bro --search --big bruh moment'.split(' ')), {
-    options: {
-      moment: 'what bro',
-      big: 'bruh moment'
-    },
-    flags: [ 'search' ],
-    contentNoOptions: 'bruh',
-    contentNoFlags: 'bruh what bro bruh moment'
-  });
+  assert.deepEqual(
+    stringTools.parseOptions(
+      'bruh --moment what bro --search --big bruh moment'.split(' ')
+    ),
+    {
+      options: {
+        moment: 'what bro',
+        big: 'bruh moment'
+      },
+      flags: ['search'],
+      contentNoOptions: 'bruh',
+      contentNoFlags: 'bruh what bro bruh moment'
+    }
+  );
 });

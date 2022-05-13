@@ -140,7 +140,13 @@ class Functions {
 
 const instance = new Functions();
 
-for (const key of Object.getOwnPropertyNames(instance))
-  Functions[key] = instance[key];
+const propertyNames = [
+  ...Object.getOwnPropertyNames(Functions.prototype).filter(
+    (name) => name !== 'constructor'
+  ),
+  ...Object.getOwnPropertyNames(instance)
+];
+
+for (const key of propertyNames) Functions[key] = instance[key];
 
 module.exports = Functions;
