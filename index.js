@@ -99,13 +99,13 @@ class Functions {
   parseOptions(args) {
     if (
       !Array.isArray(args) ||
-      !args.every((argument) => typeof argument === 'string')
+      !args.every(argument => typeof argument === 'string')
     )
       throw new TypeError(
         'First parameter must be an array and every element must be a type of string'
       );
 
-    const matches = args.filter((a) => a.startsWith('--')),
+    const matches = args.filter(a => a.startsWith('--')),
       joined = args.join(' '),
       output = {
         options: {},
@@ -133,7 +133,7 @@ class Functions {
 
     output.contentNoOptions = x <= 0 ? '' : joined.slice(0, x - 1);
     output.contentNoFlags =
-      x === -1 ? '' : args.filter((arg) => !arg.startsWith('--')).join(' ');
+      x === -1 ? '' : args.filter(arg => !arg.startsWith('--')).join(' ');
     return output;
   }
 }

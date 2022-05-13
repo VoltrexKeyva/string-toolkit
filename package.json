@@ -20,8 +20,12 @@
     "type": "git",
     "url": "git+https://github.com/VoltrexMaster/string-toolkit.git"
   },
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "decancer": "^1.1.9"
+  },
+  "devDependencies": {
+    "eslint": "^8.15.0",
+    "prettier": "^2.6.2"
   }
 }
