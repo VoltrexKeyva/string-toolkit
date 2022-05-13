@@ -1,4 +1,6 @@
 build/
 .prettierrc.json
 .eslintrc.json
+test.mjs
+.github/
 LICENSE
