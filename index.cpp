@@ -491,6 +491,7 @@ static void CreateProgressBar(const FunctionCallbackInfo<Value> & args) {
     const uint32_t available  = ::ceil((std::max<double>(args[0]->ToNumber(ctx).ToLocalChecked()->Value(), 0.0) / total) * _bar_length);
     const uint32_t bar_length = static_cast<uint32_t>(_bar_length);
     
+    printf("%d\n", bar_length);
     char * ptr = reinterpret_cast<char *>(::malloc(bar_length + 1));
 
     if (available > bar_length) {
