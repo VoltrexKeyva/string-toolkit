@@ -226,7 +226,7 @@ static void ToChunks(const FunctionCallbackInfo<Value> & args) {
     
     if (chunk_by >= length) {
         Local<Array> array = Array::New(isolate, 1);
-        array->Set(ctx, 0, args[0]);
+        (void)array->Set(ctx, 0, args[0]);
         
         return Return(args, array);
     }
@@ -239,13 +239,13 @@ static void ToChunks(const FunctionCallbackInfo<Value> & args) {
     length--;
     for (uint32_t i = 0; i <= length; i++) {
         if (i == length) {
-            array->Set(ctx, i,
-                   String::NewFromTwoByte(isolate, ptr + (i * chunk_by),
-                   NewStringType::kNormal, min == 0 ? chunk_by : min).ToLocalChecked());
+            (void)array->Set(ctx, i,
+                         String::NewFromTwoByte(isolate, ptr + (i * chunk_by),
+                         NewStringType::kNormal, min == 0 ? chunk_by : min).ToLocalChecked());
         } else {
-            array->Set(ctx, i,
-                   String::NewFromTwoByte(isolate, ptr + (i * chunk_by),
-                   NewStringType::kNormal, chunk_by).ToLocalChecked());
+            (void)array->Set(ctx, i,
+                         String::NewFromTwoByte(isolate, ptr + (i * chunk_by),
+                         NewStringType::kNormal, chunk_by).ToLocalChecked());
         }
     }
     
@@ -335,7 +335,7 @@ static void HasCustomEmoji(const FunctionCallbackInfo<Value> & args) {
     }
     
 HCE_Fail:
-    return Return(args, False(isolate));
+    Return(args, False(isolate));
 }
 
 static constexpr unsigned char base64_chars[64] = { '0', '1', '2', '3', '4', '5', '6', '7', '8',
@@ -521,7 +521,7 @@ static inline void _ModuleExports(Isolate * isolate, Local<Context> ctx, Local<O
     Local<String> str = String::NewFromUtf8(isolate, name, NewStringType::kInternalized, size).ToLocalChecked();
     
     func->SetName(str);
-    exports->Set(ctx, str, func);
+    (void)exports->Set(ctx, str, func);
 }
 
 extern "C" NODE_MODULE_EXPORT void NODE_MODULE_INITIALIZER(Local<Object> exports, Local<Value> module, Local<Context> context) {
