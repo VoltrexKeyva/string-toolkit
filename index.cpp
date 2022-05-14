@@ -10,7 +10,7 @@
 using namespace v8;
 
 #ifdef __GNUC__
-#pragma GCC diagnostics ignored "-Wunused-result"
+#pragma GCC diagnostic ignored "-Wunused-result"
 #endif
 
 #define ModuleExports(isolate, ctx, exports, name, callback) _ModuleExports(isolate, ctx, exports, name, callback, sizeof(name) - 1)
