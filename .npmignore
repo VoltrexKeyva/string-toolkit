@@ -3,4 +3,3 @@ build/
 .eslintrc.json
 test.mjs
 .github/
-LICENSE
