@@ -9,6 +9,10 @@
 
 using namespace v8;
 
+#ifdef __GNUC__
+#pragma GCC diagnostics ignored "-Wunused-result"
+#endif
+
 #define ModuleExports(isolate, ctx, exports, name, callback) _ModuleExports(isolate, ctx, exports, name, callback, sizeof(name) - 1)
 
 #define Return(args, value)         args.GetReturnValue().Set(value)
@@ -226,7 +230,7 @@ static void ToChunks(const FunctionCallbackInfo<Value> & args) {
     
     if (chunk_by >= length) {
         Local<Array> array = Array::New(isolate, 1);
-        (void)array->Set(ctx, 0, args[0]);
+        array->Set(ctx, 0, args[0]);
         
         return Return(args, array);
     }
@@ -239,13 +243,13 @@ static void ToChunks(const FunctionCallbackInfo<Value> & args) {
     length--;
     for (uint32_t i = 0; i <= length; i++) {
         if (i == length) {
-            (void)array->Set(ctx, i,
-                         String::NewFromTwoByte(isolate, ptr + (i * chunk_by),
-                         NewStringType::kNormal, min == 0 ? chunk_by : min).ToLocalChecked());
+            array->Set(ctx, i,
+                       String::NewFromTwoByte(isolate, ptr + (i * chunk_by),
+                       NewStringType::kNormal, min == 0 ? chunk_by : min).ToLocalChecked());
         } else {
-            (void)array->Set(ctx, i,
-                         String::NewFromTwoByte(isolate, ptr + (i * chunk_by),
-                         NewStringType::kNormal, chunk_by).ToLocalChecked());
+            array->Set(ctx, i,
+                       String::NewFromTwoByte(isolate, ptr + (i * chunk_by),
+                       NewStringType::kNormal, chunk_by).ToLocalChecked());
         }
     }
     
@@ -521,7 +525,7 @@ static inline void _ModuleExports(Isolate * isolate, Local<Context> ctx, Local<O
     Local<String> str = String::NewFromUtf8(isolate, name, NewStringType::kInternalized, size).ToLocalChecked();
     
     func->SetName(str);
-    (void)exports->Set(ctx, str, func);
+    exports->Set(ctx, str, func);
 }
 
 extern "C" NODE_MODULE_EXPORT void NODE_MODULE_INITIALIZER(Local<Object> exports, Local<Value> module, Local<Context> context) {
